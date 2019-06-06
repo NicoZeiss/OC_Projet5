@@ -7,3 +7,4 @@ product_url = 'https://fr.openfoodfacts.org/produit/'
 
 
 # Categories
+store_limit = 430
