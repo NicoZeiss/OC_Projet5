@@ -4,7 +4,8 @@
 # URLs
 api_url = 'https://fr.openfoodfacts.org/api/v0/product/'
 product_url = 'https://fr.openfoodfacts.org/produit/'
+cat_url = 'https://fr.openfoodfacts.org/categorie/'
 
 
 # Categories
-store_limit = 430
+categories = ['sirops-aromatises', 'boissons-energisantes']
