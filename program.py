@@ -1,6 +1,6 @@
 import mysql.connector
 from IDs import username, pw
-from update_db import update_database
+from functions import update_database, cat_loop
 
 # We log-in to our database
 mydb = mysql.connector.connect(
@@ -16,8 +16,7 @@ mycursor.execute("USE projet5")
 def main():
     user_answer = input("\n----------\nPressez 1 : pour chercher un aliment\nPressez 2 : pour consulter vos favoris\nPressez 3 : pour mettre à jour la base de données\n----------\n")
     if user_answer == '1':
-        print("à venir")
-        main()
+        cat_loop(mycursor)
     elif user_answer == '2':
         print("à venir")
         main()

@@ -8,4 +8,6 @@ cat_url = 'https://fr.openfoodfacts.org/categorie/'
 
 
 # Categories
-categories = ['boissons-energisantes']
+categories = ['boissons-energisantes', 'cremes', 'steaks', 
+'pates-a-tartiner', 'flocons-de-cereales-', 'fromages-rapes', 'mousses-au-chocolat', 
+'chocolats-noirs', 'rillettes-de-viande', 'mayonnaises']

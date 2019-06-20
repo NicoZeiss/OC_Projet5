@@ -27,12 +27,14 @@ def create_categories(mycursor, mydb):
         new_cat.insert_into_db(mycursor, mydb)
 
 def fill_products(mycursor, mydb):
+    cat_id = 1
     for category in categories:
         new_cat = Category(category)
         new_cat.create_product_list()
         cat_list = new_cat.product_list
         for i in range(0, len(cat_list)):
-            new_prod = Product(cat_list[i], category)
+            new_prod = Product(cat_list[i], cat_id)
             new_prod.create_prod()
             new_prod.save_prod(mycursor, mydb)
         print(category + " updated: " + str(len(cat_list)) + " products")
+        cat_id += 1
