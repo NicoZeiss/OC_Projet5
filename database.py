@@ -14,9 +14,9 @@ def create_tables(mycursor):
     '''We create 3 tables in our database, if they don't exist'''
 
     # Table Categories
-    mycursor.execute("CREATE TABLE IF NOT EXISTS Categories (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, PRIMARY KEY (id)) ENGINE=INNODB")
+    mycursor.execute("CREATE TABLE IF NOT EXISTS Categories (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, name VARCHAR(45) NOT NULL, PRIMARY KEY (id)) ENGINE=INNODB")
     # Table Products
-    mycursor.execute("CREATE TABLE IF NOT EXISTS Products (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, code BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, store VARCHAR(100), cat_id SMALLINT UNSIGNED, grade CHAR(1), product_url TEXT, PRIMARY KEY (id), CONSTRAINT fk_cat_id FOREIGN KEY (cat_id) REFERENCES Categories(id)) ENGINE=INNODB")
+    mycursor.execute("CREATE TABLE IF NOT EXISTS Products (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, code BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, store VARCHAR(100), cat_id SMALLINT UNSIGNED, grade CHAR(1) NOT NULL, product_url TEXT, PRIMARY KEY (id), CONSTRAINT fk_cat_id FOREIGN KEY (cat_id) REFERENCES Categories(id)) ENGINE=INNODB")
     #Table Favorite
     mycursor.execute("CREATE TABLE IF NOT EXISTS Favorite (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, code BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, store VARCHAR(100) NOT NULL, cat_id SMALLINT UNSIGNED NOT NULL, grade CHAR(1), product_url TEXT, PRIMARY KEY (id)) ENGINE=INNODB")
 
@@ -35,3 +35,4 @@ def fill_products(mycursor, mydb):
             new_prod = Product(cat_list[i], category)
             new_prod.create_prod()
             new_prod.save_prod(mycursor, mydb)
+        print(category + " updated: " + str(len(cat_list)) + " products")

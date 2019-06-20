@@ -8,6 +8,7 @@ mydb = mysql.connector.connect(
     user = username,
     passwd = pw)
 mycursor = mydb.cursor()
+mycursor.execute("CREATE DATABASE IF NOT EXISTS projet5")
 mycursor.execute("USE projet5")
 
 
