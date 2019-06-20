@@ -46,5 +46,5 @@ def product_choice(mycursor, user_answer):
         i += 1
     prod_choice += '\nChose your product:\n'
 
-    return prod_choice
+    
 
