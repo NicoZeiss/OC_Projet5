@@ -16,23 +16,17 @@ def cat_choice(mycursor):
 	for result in results:
 		cat_choice += (str(result[0]) + ": " + result[1] + "\n")
 	cat_choice += '\nChose your category:\n'
-	return cat_choice
-		
-def nb_cat(mycursor):
-	mycursor.execute("SELECT * FROM Categories")
-	result = mycursor.fetchall()
-	return result[-1][0]
+	return cat_choice, results[-1][0]
 
 def cat_loop(mycursor):
-    choice = cat_choice(mycursor)
+    choice, nb_cat = cat_choice(mycursor)
     while True:
         user_answer = input(choice)
-        if user_answer.isdigit() and 1 <= int(user_answer) <= nb_cat(mycursor):
-            prod = product_choice(mycursor, user_answer)
-            print(prod)
+        if user_answer.isdigit() and 1 <= int(user_answer) <= nb_cat:
+            prod_loop(mycursor, user_answer)
             break
         else:
-            print("\nERROR: Invalid Input")
+            print("\nERROR: Invalid Input\n")
 
 def product_choice(mycursor, user_answer):
     request = "SELECT name FROM Products WHERE cat_id = %s"
@@ -45,6 +39,15 @@ def product_choice(mycursor, user_answer):
         prod_choice += (str(i) + ": " + result[0] + "\n")
         i += 1
     prod_choice += '\nChose your product:\n'
+    return prod_choice, i - 1
 
-    
+def prod_loop(mycursor, user_answer):
+    choice, nb_prod = product_choice(mycursor, user_answer)
+    while True:
+        user_prod = input(choice)
+        if user_prod.isdigit() and 1 <= int(user_prod) <= nb_prod:
+            print("GG")
+            break
+        else:
+            print("\nERROR: Invalid Input\n")
 
