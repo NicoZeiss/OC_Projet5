@@ -1,6 +1,6 @@
 import requests
 import mysql.connector
-from constants import api_url, product_url, cat_url
+from constants import api_url, product_url, cat_url, cat_size
 from IDs import username, pw
 
 
@@ -47,7 +47,7 @@ class Category(object):
                     request = requests.get(api_url + code + '.json').json()
                     if 'nutrition_grade_fr' in request['product'] and 'stores' in request['product']:
                         if request['product']['stores'] != "":
-                            if len(self.product_list) < 50:
+                            if len(self.product_list) < cat_size:
                                 self.product_list.append(code)
                             else:
                                 i = -1

@@ -11,3 +11,8 @@ cat_url = 'https://fr.openfoodfacts.org/categorie/'
 categories = ['boissons-energisantes', 'cremes', 'steaks', 
 'pates-a-tartiner', 'flocons-de-cereales-', 'fromages-rapes', 'mousses-au-chocolat', 
 'chocolats-noirs', 'rillettes-de-viande', 'mayonnaises']
+
+cat_size = 50
+
+# Text
+template = "\nVotre sélection :\n{}\nNotre suggestion :\n{}\n"
