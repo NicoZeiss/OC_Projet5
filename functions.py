@@ -3,7 +3,6 @@ from database import create_db, create_tables, create_categories, fill_products
 from constants import cat_size, template
 
 
-
 def update_database(mycursor, mydb):
     create_db(mycursor)
     create_tables(mycursor)
@@ -33,7 +32,7 @@ def cat_loop(mycursor):
             prod_loop(mycursor, user_cat)
             break
         else:
-            print("\nERROR: Invalid Input\n")
+            print("\nERREUR: Commande inconnue\n")
 
 #_________________________________________________
 #
@@ -61,9 +60,10 @@ def prod_loop(mycursor, user_cat):
         if user_prod.isdigit() and 1 <= int(user_prod) <= nb_prod:
             result = show_result(mycursor, user_cat, user_prod)
             print(result)
+            save_sub_loop(mycursor)
             break
         else:
-            print("\nERROR: Invalid Input\n")
+            print("\nERREUR: Commande inconnue\n")
 
 #_________________________________________________
 #
@@ -77,11 +77,20 @@ def show_product(mycursor, user_cat, user_prod):
     value = (prod_id,)
     mycursor.execute(request, value)
     result = mycursor.fetchone()
+    prod_grade = result[1]
     product = formate_item(result)
-    return product
+    return product, prod_grade
 
-def show_substitute(mycursor, user_cat):
-    cat_id = user_cat
+def show_substitute(mycursor, user_cat, prod_grade):
+    request = "SELECT name, grade, store, product_url FROM Products WHERE cat_id = %s ORDER BY grade ASC"
+    value = (user_cat,)
+    mycursor.execute(request, value)
+    result = mycursor.fetchone()
+    if result[1] != prod_grade:
+        substitute = formate_item(result)
+    else:
+        substitute = "\nPas de meilleur produit à proposer\n"
+    return substitute
 
 def formate_item(result):
     text = "----------\nNom : {}\nNutriscore : {}\nMagasin : {}\nLien internet : {}\n----------\n"
@@ -94,7 +103,24 @@ def show_result(mycursor, user_cat, user_prod):
     mycursor.execute(request, value)
     category = mycursor.fetchone()
     show_cat = "\nCatégorie : {}\n".format(category[0])
-    product = show_product(mycursor, user_cat, user_prod)
-    substitute = "\nBlablabla\n"
+    product, prod_grade = show_product(mycursor, user_cat, user_prod)
+    substitute = show_substitute(mycursor, user_cat, prod_grade)
     result = show_cat + template.format(product, substitute)
     return result
+
+
+#_________________________________________________
+#
+#               SAVE SUBSTITUTE
+#_________________________________________________
+
+def save_sub_loop(mycursor):
+    while True:
+        user_answer = input("Désirez-vous ajouter ce substitut à vos favoris ? [o/n]\n")
+        if user_answer == "o":
+            print("\nSubstitut enregistré\n")
+            break
+        elif user_answer == "n":
+            break
+        else:
+            print("\nERREUR: Commande inconnue\n")

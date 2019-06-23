@@ -16,3 +16,4 @@ cat_size = 50
 
 # Text
 template = "\nVotre sélection :\n{}\nNotre suggestion :\n{}\n"
+fonc_choice = "\n----------\nPressez 1 : pour chercher un aliment\nPressez 2 : pour consulter vos favoris\nPressez 3 : pour mettre à jour la base de données\nPressez 4 : pour quitter le programme\n----------\n"
