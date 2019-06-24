@@ -5,7 +5,7 @@ from IDs import username, pw
 
 
 class Product(object):
-
+    # One instance of Product represent one product from openfoodfacts
     def __init__(self, barcode, cat_id):
         self.code = barcode
         self.api_url = api_url + barcode +'.json'
@@ -14,6 +14,7 @@ class Product(object):
         self.cat_id = cat_id
 
     def create_prod(self):
+        # we extract informations from API
         request = requests.get(self.api_url).json()
         self.product['code'] = self.code
         self.product['name'] = request['product']['product_name']
@@ -24,6 +25,7 @@ class Product(object):
         self.product['product_url'] = self.url
 
     def save_prod(self, mycursor, mydb):
+        # we insert datas into DB
         request = "INSERT INTO Products (code, name, store, cat_id, grade, product_url) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (self.product["code"], self.product["name"], self.product["store"], self.product["cat_id"], self.product["grade"], self.product["product_url"])
         mycursor.execute(request, val)
@@ -31,13 +33,14 @@ class Product(object):
 
 
 class Category(object):
-
+    # One category contain bar code of all its products into a list
     def __init__(self, cat_name):
         self.name = cat_name
         self.cat_url = cat_url + cat_name + "/"
         self.product_list = []
 
     def create_product_list(self):
+        # we append the list
         i = 1
         while i != 0:
             cat = requests.get(self.cat_url + str(i) + '.json').json()
@@ -57,9 +60,25 @@ class Category(object):
             i += 1
 
     def insert_into_db(self, mycursor, mydb):
+        # we insert datas into DB
         request = "INSERT INTO Categories (name) VALUES (%s)"
         val = (self.name,)
         mycursor.execute(request, val)
         mydb.commit()
+
+
+class Substitute(object):
+    # with this class we'll save substitutes in our DB
+    def __init__(self, subs, prod):
+        self.prod_id = prod
+        self.subs_id = subs
+
+    def add_to_db(self, mycursor, mydb):
+        request = "INSERT INTO Favorite (prod_id, subs_id) VALUES (%s, %s)"
+        val = (self.prod_id, self.subs_id)
+        mycursor.execute(request, val)
+        mydb.commit()
+
+
 
 
