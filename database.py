@@ -18,7 +18,7 @@ def create_tables(mycursor):
     # Table Products
     mycursor.execute("CREATE TABLE IF NOT EXISTS Products (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, code BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, store VARCHAR(100), cat_id SMALLINT UNSIGNED, grade CHAR(1) NOT NULL, product_url TEXT, PRIMARY KEY (id), CONSTRAINT fk_cat_id FOREIGN KEY (cat_id) REFERENCES Categories(id)) ENGINE=INNODB")
     #Table Favorite
-    mycursor.execute("CREATE TABLE IF NOT EXISTS Favorite (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, prod_id SMALLINT UNSIGNED NOT NULL, subs_id SMALLINT UNSIGNED NOT NULL, PRIMARY KEY (id), CONSTRAINT fk_prod_id FOREIGN KEY (prod_id) REFERENCES Products(id), CONSTRAINT fk_subs_id FOREIGN KEY (subs_id) REFERENCES Products(id)) ENGINE=INNODB")
+    mycursor.execute("CREATE TABLE IF NOT EXISTS Favorites (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, prod_id SMALLINT UNSIGNED NOT NULL, subs_id SMALLINT UNSIGNED NOT NULL, PRIMARY KEY (id), CONSTRAINT fk_prod_id FOREIGN KEY (prod_id) REFERENCES Products(id), CONSTRAINT fk_subs_id FOREIGN KEY (subs_id) REFERENCES Products(id)) ENGINE=INNODB")
 
 
 def create_categories(mycursor, mydb):
@@ -30,7 +30,7 @@ def create_categories(mycursor, mydb):
 
 def fill_products(mycursor, mydb):
     '''we create all products from categories with Product class'''
-    
+
     cat_id = 1
     for category in categories:
         new_cat = Category(category)

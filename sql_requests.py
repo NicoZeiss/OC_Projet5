@@ -50,14 +50,14 @@ def cat_name(mycursor, user_cat):
 def show_subs_list(mycursor):
     '''We select the name of all products saved in Favorite table'''
 
-    mycursor.execute("SELECT name FROM Products INNER JOIN Favorite ON Products.id = Favorite.subs_id")
+    mycursor.execute("SELECT name FROM Products INNER JOIN Favorite ON Products.id = Favorites.subs_id")
     results = mycursor.fetchall()
     return results
 
 def show_favorite(mycursor, subs_id):
     '''We display of informations about one substitute saved as favorite'''
 
-    request = ("SELECT name, grade, store, product_url FROM Products INNER JOIN Favorite ON Products.id = Favorite.subs_id WHERE Favorite.id = %s")
+    request = ("SELECT name, grade, store, product_url FROM Products INNER JOIN Favorite ON Products.id = Favorites.subs_id WHERE Favorites.id = %s")
     value = (subs_id,)
     mycursor.execute(request, value)
     result = mycursor.fetchone()
@@ -66,7 +66,7 @@ def show_favorite(mycursor, subs_id):
 def show_original_prod(mycursor, prod_id):
     '''We display of informations about one product saved as favorite'''
 
-    request = ("SELECT name, grade, store, product_url FROM Products INNER JOIN Favorite ON Products.id = Favorite.prod_id WHERE Favorite.id = %s")
+    request = ("SELECT name, grade, store, product_url FROM Products INNER JOIN Favorite ON Products.id = Favorites.prod_id WHERE Favorites.id = %s")
     value = (prod_id,)
     mycursor.execute(request, value)
     result = mycursor.fetchone()
