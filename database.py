@@ -22,13 +22,15 @@ def create_tables(mycursor):
 
 
 def create_categories(mycursor, mydb):
-    # Iterate on each category, and create an instance with cat class
+    '''Iterate on each category, and create an instance with cat class'''
+
     for category in categories:
         new_cat = Category(category)
         new_cat.insert_into_db(mycursor, mydb)
 
 def fill_products(mycursor, mydb):
-    # we create all products from categories with Product class
+    '''we create all products from categories with Product class'''
+    
     cat_id = 1
     for category in categories:
         new_cat = Category(category)

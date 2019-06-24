@@ -15,7 +15,8 @@ mycursor.execute("USE projet5")
 
 
 def main():
-    # that's the main function, with the four main functionalities off our software
+    '''That's the main function, user has to chose one on 4 options'''
+
     while True:
         user_answer = input(fonc_choice)
         if user_answer == '1':

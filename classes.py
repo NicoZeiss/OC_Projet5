@@ -5,7 +5,8 @@ from IDs import username, pw
 
 
 class Product(object):
-    # One instance of Product represent one product from openfoodfacts
+    '''One instance of Product represent one product from openfoodfacts'''
+
     def __init__(self, barcode, cat_id):
         self.code = barcode
         self.api_url = api_url + barcode +'.json'
@@ -25,7 +26,7 @@ class Product(object):
         self.product['product_url'] = self.url
 
     def save_prod(self, mycursor, mydb):
-        # we insert datas into DB
+        '''we insert datas into DB'''
         request = "INSERT INTO Products (code, name, store, cat_id, grade, product_url) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (self.product["code"], self.product["name"], self.product["store"], self.product["cat_id"], self.product["grade"], self.product["product_url"])
         mycursor.execute(request, val)
@@ -33,7 +34,8 @@ class Product(object):
 
 
 class Category(object):
-    # One category contain bar code of all its products into a list
+    '''One category contain bar code of all its products into a list'''
+
     def __init__(self, cat_name):
         self.name = cat_name
         self.cat_url = cat_url + cat_name + "/"
@@ -60,7 +62,8 @@ class Category(object):
             i += 1
 
     def insert_into_db(self, mycursor, mydb):
-        # we insert datas into DB
+        '''we insert datas into DB'''
+
         request = "INSERT INTO Categories (name) VALUES (%s)"
         val = (self.name,)
         mycursor.execute(request, val)
@@ -68,7 +71,8 @@ class Category(object):
 
 
 class Substitute(object):
-    # with this class we'll save substitutes in our DB
+    '''with this class we'll save substitutes in our DB'''
+    
     def __init__(self, subs, prod):
         self.prod_id = prod
         self.subs_id = subs
