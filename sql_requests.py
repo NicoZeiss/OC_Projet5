@@ -1,13 +1,16 @@
-import mysql.connector
+# -*- coding: Utf-8 -*-
 
 '''
 Here are all the requests we'll use to interact with the DB
 '''
 
-def show_cat(mycursor):
+
+def read_cat(mycursor):
     '''We select all items from Categories'''
 
-    mycursor.execute("SELECT * FROM Categories")
+    mycursor.execute(
+        "SELECT * FROM Categories"
+        )
     results = mycursor.fetchall()
     return results
 
@@ -50,14 +53,18 @@ def cat_name(mycursor, user_cat):
 def show_subs_list(mycursor):
     '''We select the name of all products saved in Favorite table'''
 
-    mycursor.execute("SELECT name FROM Products INNER JOIN Favorite ON Products.id = Favorites.subs_id")
+    mycursor.execute(
+        "SELECT name FROM Products INNER JOIN Favorites ON Products.id = Favorites.subs_id"
+        )
     results = mycursor.fetchall()
     return results
 
 def show_favorite(mycursor, subs_id):
     '''We display of informations about one substitute saved as favorite'''
 
-    request = ("SELECT name, grade, store, product_url FROM Products INNER JOIN Favorite ON Products.id = Favorites.subs_id WHERE Favorites.id = %s")
+    request = (
+        "SELECT name, grade, store, product_url FROM Products INNER JOIN Favorites ON Products.id = Favorites.subs_id WHERE Favorites.id = %s"
+        )
     value = (subs_id,)
     mycursor.execute(request, value)
     result = mycursor.fetchone()
@@ -66,7 +73,9 @@ def show_favorite(mycursor, subs_id):
 def show_original_prod(mycursor, prod_id):
     '''We display of informations about one product saved as favorite'''
 
-    request = ("SELECT name, grade, store, product_url FROM Products INNER JOIN Favorite ON Products.id = Favorites.prod_id WHERE Favorites.id = %s")
+    request = (
+        "SELECT name, grade, store, product_url FROM Products INNER JOIN Favorites ON Products.id = Favorites.prod_id WHERE Favorites.id = %s"
+        )
     value = (prod_id,)
     mycursor.execute(request, value)
     result = mycursor.fetchone()

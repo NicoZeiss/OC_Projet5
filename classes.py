@@ -1,7 +1,9 @@
+# -*- coding: Utf-8 -*-
+
+'''Here are all the 3 classes we use in our program'''
+
 import requests
-import mysql.connector
 from constants import api_url, product_url, cat_url, cat_size
-from IDs import username, pw
 
 
 class Product(object):
@@ -15,7 +17,8 @@ class Product(object):
         self.cat_id = cat_id
 
     def create_prod(self):
-        # we extract informations from API
+        '''we extract informations from API'''
+
         request = requests.get(self.api_url).json()
         self.product['code'] = self.code
         self.product['name'] = request['product']['product_name']
@@ -27,6 +30,7 @@ class Product(object):
 
     def save_prod(self, mycursor, mydb):
         '''we insert datas into DB'''
+
         request = "INSERT INTO Products (code, name, store, cat_id, grade, product_url) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (self.product["code"], self.product["name"], self.product["store"], self.product["cat_id"], self.product["grade"], self.product["product_url"])
         mycursor.execute(request, val)
@@ -42,7 +46,8 @@ class Category(object):
         self.product_list = []
 
     def create_product_list(self):
-        # we append the list
+        '''we append the list'''
+
         i = 1
         while i != 0:
             cat = requests.get(self.cat_url + str(i) + '.json').json()
@@ -72,17 +77,15 @@ class Category(object):
 
 class Substitute(object):
     '''with this class we'll save substitutes in our DB'''
-    
+
     def __init__(self, subs, prod):
         self.prod_id = prod
         self.subs_id = subs
 
     def add_to_db(self, mycursor, mydb):
-        request = "INSERT INTO Favorite (prod_id, subs_id) VALUES (%s, %s)"
+        '''we insert prod and subs id in our db, table Favorites'''
+
+        request = "INSERT INTO Favorites (prod_id, subs_id) VALUES (%s, %s)"
         val = (self.prod_id, self.subs_id)
         mycursor.execute(request, val)
         mydb.commit()
-
-
-
-

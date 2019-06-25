@@ -57,5 +57,5 @@ pw = 'MOTDEPASSE'
 
 Lancement de l'application :
 
-Pour lancer le programme, il suffit d'exécuter le fichier program.py
+Pour lancer le programme, il suffit d'exécuter le fichier program.py dans le dossier OC_Projet5 : python3 program.py
 

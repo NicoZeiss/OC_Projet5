@@ -1,13 +1,20 @@
+# -*- coding: Utf-8 -*-
+
+"""
+This is the main file of our program
+"""
+
 import mysql.connector
 from IDs import username, pw
 from functions import update_database, cat_loop, favorite_loop
 from constants import fonc_choice
 
+
 # We log-in to our database
 mydb = mysql.connector.connect(
-    host = "localhost",
-    user = username,
-    passwd = pw)
+    host="localhost",
+    user=username,
+    passwd=pw)
 mycursor = mydb.cursor(buffered=True)
 mycursor.execute("CREATE DATABASE IF NOT EXISTS projet5")
 mycursor.execute("USE projet5")
@@ -30,7 +37,6 @@ def main():
             break
         else:
             print("\nERREUR: Commande inconnue\n")
-    
 
 
 if __name__ == "__main__":

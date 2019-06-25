@@ -1,3 +1,4 @@
+# -*- coding: Utf-8 -*-
 # Here are all the constants we'll use in our project
 
 
@@ -8,8 +9,8 @@ cat_url = 'https://fr.openfoodfacts.org/categorie/'
 
 
 # Categories
-categories = ['boissons-energisantes', 'cremes', 'steaks', 
-'pates-a-tartiner', 'flocons-de-cereales-', 'fromages-rapes', 'mousses-au-chocolat', 
+categories = ['boissons-energisantes', 'beignets-sucres', 'taboules', 
+'pates-a-tartiner', 'flocons-de-cereales-', 'fromages-rapes', 'jambons-blancs', 
 'chocolats-noirs', 'rillettes-de-viande', 'mayonnaises']
 
 cat_size = 50
