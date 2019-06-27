@@ -22,7 +22,7 @@ def create_tables(mycursor):
         )
     # Table Products
     mycursor.execute(
-        "CREATE TABLE IF NOT EXISTS Products (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, code BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, store VARCHAR(100), cat_id SMALLINT UNSIGNED, grade CHAR(1) NOT NULL, product_url TEXT, PRIMARY KEY (id), CONSTRAINT fk_cat_id FOREIGN KEY (cat_id) REFERENCES Categories(id)) ENGINE=INNODB"
+        "CREATE TABLE IF NOT EXISTS Products (id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, store VARCHAR(100), cat_id SMALLINT UNSIGNED, grade CHAR(1) NOT NULL, product_url TEXT, PRIMARY KEY (id), CONSTRAINT fk_cat_id FOREIGN KEY (cat_id) REFERENCES Categories(id)) ENGINE=INNODB"
         )
     #Table Favorite
     mycursor.execute(
@@ -30,24 +30,14 @@ def create_tables(mycursor):
         )
 
 
-def create_categories(mycursor, mydb):
-    '''Iterate on each category, and create an instance with cat class'''
-
-    for category in categories:
-        new_cat = Category(category)
-        new_cat.insert_into_db(mycursor, mydb)
-
 def fill_products(mycursor, mydb):
     '''we create all products from categories with Product class'''
 
     cat_id = 1
     for category in categories:
         new_cat = Category(category)
-        new_cat.create_product_list()
-        cat_list = new_cat.product_list
-        for i in range(0, len(cat_list)):
-            new_prod = Product(cat_list[i], cat_id)
-            new_prod.create_prod()
-            new_prod.save_prod(mycursor, mydb)
-        print(category + " updated: " + str(len(cat_list)) + " products")
+        new_cat.insert_into_db(mycursor)
+        new_cat.create_product_list(cat_id, mycursor)
+        print(category + " updated")
         cat_id += 1
+    mydb.commit()

@@ -9,32 +9,27 @@ from constants import api_url, product_url, cat_url, cat_size
 class Product(object):
     '''One instance of Product represent one product from openfoodfacts'''
 
-    def __init__(self, barcode, cat_id):
-        self.code = barcode
-        self.api_url = api_url + barcode +'.json'
-        self.url = product_url + barcode
-        self.product = {"code": "", "name": "", "store": "", "cat_id": "", "grade": "", "product_url": ""}
-        self.cat_id = cat_id
+    def __init__(self):
+        self.name = ""
+        self.grade = ""
+        self.store = ""
+        self.url = ""
+        self.cat_id = 0
 
-    def create_prod(self):
+    def create_prod(self,p_name, p_grade, p_store, p_url, p_catid, mycursor):
         '''we extract informations from API'''
 
-        request = requests.get(self.api_url).json()
-        self.product['code'] = self.code
-        self.product['name'] = request['product']['product_name']
-        stores = request['product']['stores'].split(",")
-        self.product['store'] = stores[0]
-        self.product['cat_id'] = self.cat_id
-        self.product['grade'] = request['product']['nutrition_grade_fr']
-        self.product['product_url'] = self.url
+        self.name = p_name
+        self.grade = p_grade
+        self.store = p_store
+        self.url = p_url
+        self.cat_id = p_catid
 
-    def save_prod(self, mycursor, mydb):
-        '''we insert datas into DB'''
-
-        request = "INSERT INTO Products (code, name, store, cat_id, grade, product_url) VALUES (%s, %s, %s, %s, %s, %s)"
-        val = (self.product["code"], self.product["name"], self.product["store"], self.product["cat_id"], self.product["grade"], self.product["product_url"])
+        request = "INSERT INTO Products (name, store, cat_id, grade, product_url) VALUES (%s, %s, %s, %s, %s)"
+        val = (self.name, 
+            self.store, self.cat_id, 
+            self.grade, self.url)
         mycursor.execute(request, val)
-        mydb.commit()
 
 
 class Category(object):
@@ -43,36 +38,44 @@ class Category(object):
     def __init__(self, cat_name):
         self.name = cat_name
         self.cat_url = cat_url + cat_name + "/"
-        self.product_list = []
 
-    def create_product_list(self):
+    def create_product_list(self, cat_id, mycursor):
         '''we append the list'''
 
-        i = 1
-        while i != 0:
-            cat = requests.get(self.cat_url + str(i) + '.json').json()
-            if len(cat["products"]) != 0:
-                for j in range(0, len(cat["products"])):
-                    code = cat['products'][j]['code']
-                    request = requests.get(api_url + code + '.json').json()
-                    if 'nutrition_grade_fr' in request['product'] and 'stores' in request['product']:
-                        if request['product']['stores'] != "":
-                            if len(self.product_list) < cat_size:
-                                self.product_list.append(code)
-                            else:
-                                i = -1
-                                break
-            else:
-                break
-            i += 1
+        nb_page = 1
+        nb_prod = 0
+        while nb_prod < 50:
+            category = requests.get(self.cat_url + str(nb_page) + '.json').json()
+            p_name = ""
+            p_grade = ""
+            p_store = ""
+            p_url = ""
+            p_catid = cat_id
+            product = Product()
+            for p in category["products"]:
+                try:
+                    p_name = p["product_name"]
+                    p_grade = p["nutrition_grade_fr"]
+                    p_store = p["stores"]
+                    p_url = p["url"]
+                except KeyError:
+                    pass
 
-    def insert_into_db(self, mycursor, mydb):
+                if nb_prod < 50:
+                    product.create_prod(p_name, p_grade, p_store, p_url, p_catid, mycursor)
+                    nb_prod += 1
+                else:
+                    break
+
+        nb_page += 1
+
+
+    def insert_into_db(self, mycursor):
         '''we insert datas into DB'''
 
         request = "INSERT INTO Categories (name) VALUES (%s)"
         val = (self.name,)
         mycursor.execute(request, val)
-        mydb.commit()
 
 
 class Substitute(object):

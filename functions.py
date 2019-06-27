@@ -4,7 +4,7 @@
 Here are all the main functions used into our software
 '''
 
-from database import create_db, create_tables, create_categories, fill_products
+from database import create_db, create_tables, fill_products
 from constants import cat_size, template, no_subs
 from sql_requests import read_cat, show_prod, select_prod, find_substitute, cat_name
 from sql_requests import show_subs_list, show_favorite, show_original_prod
@@ -16,7 +16,6 @@ def update_database(mycursor, mydb):
 
     create_db(mycursor)
     create_tables(mycursor)
-    create_categories(mycursor, mydb)
     fill_products(mycursor, mydb)
 
 #_________________________________________________
